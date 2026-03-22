@@ -218,4 +218,9 @@ export class ApiService {
   consumeAllNotifications(): Observable<any> {
     return this.http.delete(`${this.API_URL}/notifications`);
   }
+
+  // Feedback
+  sendFeedback(text: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.API_URL}/feedback`, { text });
+  }
 }
