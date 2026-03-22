@@ -36,7 +36,7 @@ jobs:
       - run: npm ci
 
       - name: Build Angular
-        run: npm run build -- --configuration production --base-href "/${{ github.event.repository.name }}/"
+        run: npm run build -- --configuration production --base-href "/"
 
       - uses: actions/configure-pages@v5
 
