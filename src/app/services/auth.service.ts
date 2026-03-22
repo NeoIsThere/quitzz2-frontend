@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, throwError } from 'rxjs';
+import { Observable, tap, catchError, throwError, map } from 'rxjs';
 
 export interface User {
   id: number;
@@ -120,6 +120,18 @@ export class AuthService {
     this.clearStorage();
     this._user.set(null);
     this.router.navigate(['/']);
+  }
+
+  refreshToken(): Observable<string> {
+    const currentToken = this.getToken();
+    return this.http.post<{ token: string }>(`${this.API_URL}/auth/refresh`, {}, {
+      headers: { 'Authorization': `Bearer ${currentToken}` }
+    }).pipe(
+      map(response => {
+        localStorage.setItem(this.TOKEN_KEY, response.token);
+        return response.token;
+      })
+    );
   }
 
   refreshUser(): Observable<User> {
