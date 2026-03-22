@@ -11,29 +11,30 @@
       </button>
     </div>
 
-    @if (showFeedback) {
+    @if (showFeedback()) {
       <div class="feedback-panel">
         <textarea
           class="feedback-textarea"
-          [(ngModel)]="feedbackText"
+          [ngModel]="feedbackText()"
+          (ngModelChange)="feedbackText.set($event)"
           placeholder="Tell us what you think…"
           maxlength="2000"
           rows="4"
         ></textarea>
         <div class="feedback-actions">
-          <span class="feedback-char-count">{{ feedbackText.length }}/2000</span>
+          <span class="feedback-char-count">{{ feedbackText().length }}/2000</span>
           <button
             class="feedback-send-btn"
-            [disabled]="feedbackText.trim().length === 0 || sendingFeedback"
+            [disabled]="feedbackText().trim().length === 0 || sendingFeedback()"
             (click)="submitFeedback()"
           >
-            {{ sendingFeedback ? 'Sending…' : 'Send' }}
+            {{ sendingFeedback() ? 'Sending…' : 'Send' }}
           </button>
         </div>
-        @if (feedbackSuccess) {
+        @if (feedbackSuccess()) {
           <p class="feedback-msg success">Thanks for your feedback!</p>
         }
-        @if (feedbackError) {
+        @if (feedbackError()) {
           <p class="feedback-msg error">Something went wrong. Please try again.</p>
         }
       </div>
