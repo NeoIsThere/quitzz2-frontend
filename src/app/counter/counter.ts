@@ -1,4 +1,4 @@
-import { Component, signal, computed, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, computed, inject, OnInit, OnDestroy, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { firstValueFrom } from 'rxjs';
 import { CommitButton } from '../commit-button/commit-button';
@@ -83,6 +83,25 @@ export class Counter implements OnInit, OnDestroy {
     const percentage = this.counterValue();
     return circumference - (circumference * percentage) / 100;
   });
+
+  constructor() {
+    // When the user logs out, reset signals to demo values immediately
+    effect(() => {
+      const loggedIn = this.authService.isLoggedIn();
+      if (!loggedIn) {
+        this.counterValue.set(42);
+        this.currentRank.set(4);
+        this.nextRank.set(5);
+        this.currentStreak.set(5);
+        this.stats.set(null);
+        this.showRankPopup.set(false);
+        this.showMilestonePopup.set(false);
+        this.showInfoPopup.set(false);
+        this.showStatsPopup.set(false);
+        this.showCommitInfo.set(false);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.motivationalMessage.set(this.pickMotivationalMessage());

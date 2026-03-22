@@ -41,6 +41,7 @@ export class Challenge implements OnInit, OnDestroy {
   
   // Notification queue — processed one at a time, oldest first
   private notifQueue: QueuedNotification[] = [];
+  private processingQueue = false;
   protected showVictory = signal(false);
   protected showFailure = signal(false);
   protected showChallengeStarted = signal(false);
@@ -64,7 +65,7 @@ export class Challenge implements OnInit, OnDestroy {
     
     // Refresh every 30 seconds
     this.refreshSubscription = interval(30000).subscribe(() => {
-      if (this.authService.isLoggedIn()) {
+      if (this.authService.isLoggedIn() && !this.processingQueue) {
         this.loadChallengeState();
         this.checkNotifications();
       }
@@ -80,20 +81,35 @@ export class Challenge implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn()) {
       const customEvent = event as CustomEvent;
       if (customEvent?.detail?.challengeFailed) {
-        // Show failure UI immediately, then load notifications
-        // so the queue has the CHALLENGE_FAILED notif ID for proper backend deletion on dismiss
+        // Lock the queue so the 30s interval doesn't interfere
+        this.processingQueue = true;
         this.showFailure.set(true);
         this.mode.set('failure');
         this.apiService.getChallengeNotifications().subscribe({
           next: (response) => {
             const currentUsername = this.authService.user()?.username;
-            this.notifQueue = response.notifications
-              .filter(n => !(n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername))
-              .map(n => ({ id: n.id, type: n.type, trigger_username: n.trigger_username }));
+
+            // Auto-consume self-started notifications
             const selfStarted = response.notifications
               .filter(n => n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername);
             for (const n of selfStarted) {
               this.apiService.consumeNotification(n.id).subscribe();
+            }
+
+            // Build queue excluding self-started, with CHALLENGE_FAILED at front
+            const queue = response.notifications
+              .filter(n => !(n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername))
+              .map(n => ({ id: n.id, type: n.type, trigger_username: n.trigger_username }));
+            const failedIdx = queue.findIndex(n => n.type === 'CHALLENGE_FAILED');
+            if (failedIdx > 0) {
+              const [failed] = queue.splice(failedIdx, 1);
+              queue.unshift(failed);
+            }
+            this.notifQueue = queue;
+
+            // If user already dismissed before API returned, advance the queue
+            if (!this.showFailure()) {
+              this.consumeAndAdvance();
             }
           }
         });
@@ -132,7 +148,8 @@ export class Challenge implements OnInit, OnDestroy {
    */
   private checkNotifications(): void {
     if (!this.authService.isLoggedIn()) return;
-    // Don't reload if already showing a notification
+    // Don't re-fetch while the queue is being processed
+    if (this.processingQueue) return;
     if (this.showVictory() || this.showFailure() || this.showChallengeStarted()) return;
 
     this.apiService.getChallengeNotifications().subscribe({
@@ -152,6 +169,9 @@ export class Challenge implements OnInit, OnDestroy {
           this.apiService.consumeNotification(n.id).subscribe();
         }
 
+        if (this.notifQueue.length > 0) {
+          this.processingQueue = true;
+        }
         this.showNextNotification();
       }
     });
@@ -159,10 +179,11 @@ export class Challenge implements OnInit, OnDestroy {
 
   /**
    * Show the first notification in the queue (if any).
-   * If queue is empty, just refresh challenge state.
+   * If queue is empty, unlock and refresh challenge state.
    */
   private showNextNotification(): void {
     if (this.notifQueue.length === 0) {
+      this.processingQueue = false;
       this.loadChallengeState();
       return;
     }
@@ -186,6 +207,7 @@ export class Challenge implements OnInit, OnDestroy {
    */
   private consumeAndAdvance(): void {
     if (this.notifQueue.length === 0) {
+      this.processingQueue = false;
       this.loadChallengeState();
       return;
     }

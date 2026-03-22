@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, inject, OnInit, OnDestroy, effect } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../services/api.service';
@@ -30,6 +30,16 @@ export class Leaderboard implements OnInit, OnDestroy {
 
   protected readonly leaderboardData = signal<LeaderboardEntry[]>([]);
   protected readonly isLoading = signal(false);
+
+  constructor() {
+    // When the user logs out, switch to demo data immediately
+    effect(() => {
+      const loggedIn = this.authService.isLoggedIn();
+      if (!loggedIn) {
+        this.loadLeaderboard();
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.loadLeaderboard();
