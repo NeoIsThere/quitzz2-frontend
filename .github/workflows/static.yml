@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  PROJECT_NAME: my-quitzz2-frontend
+  PROJECT_NAME: quitzz-2
 
 jobs:
   build-and-deploy:
