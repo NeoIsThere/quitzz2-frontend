@@ -191,7 +191,7 @@
                 @for (ev of s.recentEvents; track ev.date) {
                   <div class="event-row">
                     <span class="event-type" [class.event-relapse]="ev.type === 'RELAPSE'" [class.event-urge]="ev.type === 'URGE'" [class.event-commit]="ev.type === 'COMMIT'">{{ ev.type }}</span>
-                    <span class="event-date">{{ ev.date | date:'MMM d, h:mm a' }}</span>
+                    <span class="event-date">{{ ev.date }}</span>
                   </div>
                 }
               </div>

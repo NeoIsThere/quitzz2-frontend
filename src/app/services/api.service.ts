@@ -155,7 +155,8 @@ export class ApiService {
   }
 
   getStats(): Observable<StatsResponse> {
-    return this.http.get<StatsResponse>(`${this.API_URL}/events/stats`);
+    const tz = encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone);
+    return this.http.get<StatsResponse>(`${this.API_URL}/events/stats?tz=${tz}`);
   }
 
   // Progress
