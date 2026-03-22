@@ -33,7 +33,7 @@
   }
 
   <!-- Victory Mode -->
-  @if (mode() === 'victory') {
+  @if (showVictory()) {
     <div class="overlay-mode victory-mode">
       <button class="close-btn" (click)="dismissVictory()">
         <i class="pi pi-times"></i>
@@ -46,7 +46,7 @@
   }
 
   <!-- Failure Mode -->
-  @if (mode() === 'failure') {
+  @if (showFailure()) {
     <div class="overlay-mode failure-mode">
       <button class="close-btn" (click)="dismissFailure()">
         <i class="pi pi-times"></i>

@@ -87,18 +87,8 @@ export class Challenge implements OnInit, OnDestroy {
         this.mode.set('failure');
         this.apiService.getChallengeNotifications().subscribe({
           next: (response) => {
-            const currentUsername = this.authService.user()?.username;
-
-            // Auto-consume self-started notifications
-            const selfStarted = response.notifications
-              .filter(n => n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername);
-            for (const n of selfStarted) {
-              this.apiService.consumeNotification(n.id).subscribe();
-            }
-
-            // Build queue excluding self-started, with CHALLENGE_FAILED at front
+            // Build queue with CHALLENGE_FAILED at front
             const queue = response.notifications
-              .filter(n => !(n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername))
               .map(n => ({ id: n.id, type: n.type, trigger_username: n.trigger_username }));
             const failedIdx = queue.findIndex(n => n.type === 'CHALLENGE_FAILED');
             if (failedIdx > 0) {
@@ -154,20 +144,9 @@ export class Challenge implements OnInit, OnDestroy {
 
     this.apiService.getChallengeNotifications().subscribe({
       next: (response) => {
-        const currentUsername = this.authService.user()?.username;
-
         // Build queue: all notifications in chronological order (server returns ASC)
-        // Filter out CHALLENGE_STARTED from self
         this.notifQueue = response.notifications
-          .filter(n => !(n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername))
           .map(n => ({ id: n.id, type: n.type, trigger_username: n.trigger_username }));
-
-        // Consume self-started notifications immediately (don't show them)
-        const selfStarted = response.notifications
-          .filter(n => n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername);
-        for (const n of selfStarted) {
-          this.apiService.consumeNotification(n.id).subscribe();
-        }
 
         if (this.notifQueue.length > 0) {
           this.processingQueue = true;
