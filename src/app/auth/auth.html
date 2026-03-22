@@ -1,0 +1,220 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1 class="auth-title">UNBREAKER</h1>
+      <p class="auth-subtitle">Fight for freedom</p>
+    </div>
+
+    @if (mode() !== 'forgot-password') {
+      <div class="auth-tabs">
+        <button 
+          class="tab-btn" 
+          [class.active]="mode() === 'login'"
+          (click)="toggleMode()">
+          Sign In
+        </button>
+        <button 
+          class="tab-btn" 
+          [class.active]="mode() === 'register'"
+          (click)="toggleMode()">
+          Sign Up
+        </button>
+      </div>
+    }
+
+    @if (error()) {
+      <div class="error-message">
+        <i class="pi pi-exclamation-circle"></i>
+        {{ error() }}
+      </div>
+    }
+
+    @if (successMessage()) {
+      <div class="success-message">
+        <i class="pi pi-check-circle"></i>
+        {{ successMessage() }}
+      </div>
+    }
+
+    <!-- Login Form -->
+    @if (mode() === 'login') {
+      <form class="auth-form" (ngSubmit)="onLogin()">
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input 
+            type="email" 
+            id="login-email" 
+            [(ngModel)]="loginEmail"
+            name="loginEmail"
+            placeholder="Enter your email"
+            autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            [(ngModel)]="loginPassword"
+            name="loginPassword"
+            placeholder="Enter your password"
+            autocomplete="current-password">
+        </div>
+
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="authService.isLoading()">
+          @if (authService.isLoading()) {
+            <i class="pi pi-spin pi-spinner"></i>
+            Signing in...
+          } @else {
+            Sign In
+          }
+        </button>
+
+        <button type="button" class="forgot-link" (click)="showForgotPassword()">
+          Forgot your password?
+        </button>
+      </form>
+    }
+
+    <!-- Forgot Password Form -->
+    @if (mode() === 'forgot-password') {
+      <div class="forgot-header">
+        <p class="forgot-description">Enter your email and we'll send you a link to reset your password.</p>
+      </div>
+
+      <form class="auth-form" (ngSubmit)="onForgotPassword()">
+        <div class="form-group">
+          <label for="forgot-email">Email</label>
+          <input 
+            type="email" 
+            id="forgot-email" 
+            [(ngModel)]="forgotPasswordEmail"
+            name="forgotPasswordEmail"
+            placeholder="Enter your email"
+            autocomplete="email">
+        </div>
+
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="authService.isLoading()">
+          @if (authService.isLoading()) {
+            <i class="pi pi-spin pi-spinner"></i>
+            Sending...
+          } @else {
+            Send Reset Link
+          }
+        </button>
+
+        <button type="button" class="forgot-link" (click)="backToLogin()">
+          <i class="pi pi-arrow-left"></i> Back to Sign In
+        </button>
+      </form>
+    }
+
+    <!-- Register Form -->
+    @if (mode() === 'register') {
+      <form class="auth-form" (ngSubmit)="onRegister()">
+        <div class="form-group">
+          <label for="register-username">Username</label>
+          <input 
+            type="text" 
+            id="register-username" 
+            [(ngModel)]="registerUsername"
+            name="registerUsername"
+            placeholder="Choose a username (max 20 chars)"
+            maxlength="20"
+            autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input 
+            type="email" 
+            id="register-email" 
+            [(ngModel)]="registerEmail"
+            name="registerEmail"
+            placeholder="Enter your email"
+            autocomplete="email">
+        </div>
+
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input 
+            type="password" 
+            id="register-password" 
+            [(ngModel)]="registerPassword"
+            name="registerPassword"
+            placeholder="Create a password (min 8 characters)"
+            autocomplete="new-password">
+        </div>
+
+        <div class="form-group">
+          <label for="register-confirm">Confirm Password</label>
+          <input 
+            type="password" 
+            id="register-confirm" 
+            [(ngModel)]="registerConfirmPassword"
+            name="registerConfirmPassword"
+            placeholder="Confirm your password"
+            autocomplete="new-password">
+        </div>
+
+        <div class="form-group">
+          <label for="current-streak">
+            Current streak (days)
+            <span class="label-hint">(how many days since your last relapse?)</span>
+          </label>
+          <input 
+            type="number" 
+            id="current-streak" 
+            [(ngModel)]="currentStreak"
+            name="currentStreak"
+            min="0"
+            placeholder="0">
+        </div>
+
+        <div class="form-group">
+          <label for="estimated-relapses">
+            Estimated relapses
+            <span class="label-hint">(be honest)</span>
+          </label>
+          <div class="relapse-input-row">
+            <input 
+              type="number" 
+              id="estimated-relapses" 
+              [(ngModel)]="estimatedRelapses"
+              name="estimatedRelapses"
+              min="0"
+              max="100"
+              placeholder="7">
+            <span class="relapse-per">per</span>
+            <select 
+              [(ngModel)]="relapseFrequencyUnit"
+              name="relapseFrequencyUnit"
+              class="frequency-select">
+              <option value="day">day</option>
+              <option value="week">week</option>
+              <option value="month">month</option>
+            </select>
+          </div>
+        </div>
+
+        <button 
+          type="submit" 
+          class="submit-btn"
+          [disabled]="authService.isLoading()">
+          @if (authService.isLoading()) {
+            <i class="pi pi-spin pi-spinner"></i>
+            Creating account...
+          } @else {
+            Create Account
+          }
+        </button>
+      </form>
+    }
+  </div>
+</div>

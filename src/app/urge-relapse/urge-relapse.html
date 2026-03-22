@@ -1,0 +1,82 @@
+<div class="urge-relapse-container">
+  <!-- Relapse Confirmation Dialog -->
+  @if (showRelapseConfirm()) {
+    <div class="confirm-overlay" (click)="dismissRelapseConfirm()">
+      <div class="confirm-card" (click)="$event.stopPropagation()">
+        <div class="confirm-icon">⚠️</div>
+        <h3 class="confirm-title">Are you sure?</h3>
+        <div class="confirm-actions">
+          <button class="confirm-cancel" (click)="dismissRelapseConfirm()">Cancel</button>
+          <button class="confirm-yes" (click)="confirmRelapse()">Yes, I relapsed</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <h2 class="urge-relapse-title">Urge Tracker</h2>
+  <div class="button-group">
+    <button class="urge-btn" (click)="onUrge()" [disabled]="isUrgeLoading()">
+      @if (isUrgeLoading()) {
+        <i class="pi pi-spin pi-spinner"></i>
+      } @else if (showUrgeSuccess()) {
+        <i class="pi pi-check"></i> Logged!
+      } @else {
+        Urge
+      }
+    </button>
+    <button class="relapse-btn" (click)="onRelapse()" [disabled]="isRelapseLoading()">
+      @if (isRelapseLoading()) {
+        <i class="pi pi-spin pi-spinner"></i>
+      } @else if (showRelapseSuccess() || showRelapseAlreadyRecorded()) {
+        <i class="pi pi-check"></i> Logged!
+      } @else {
+        Relapse
+      }
+    </button>
+  </div>
+
+  <div class="message-section">
+    <h3 class="message-title">Send a Message</h3>
+    
+    <div class="target-picker">
+      <label class="target-label" for="target-user">To:</label>
+      <select 
+        id="target-user" 
+        class="target-select"
+        [value]="selectedTargetUserId() ?? ''"
+        (change)="onTargetChange($any($event.target).value)">
+        <option value="">Everyone</option>
+        @for (member of groupMembers(); track member.id) {
+          <option [value]="member.id">{{ member.username }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="message-chips">
+      @for (msg of messageOptions; track msg.value) {
+        <button 
+          class="message-chip"
+          [class.selected]="selectedMessage() === msg.value"
+          [class.sent]="sentMessage() === msg.value"
+          [disabled]="isMessageLoading()"
+          (click)="sendMessage(msg.value)">
+          @if (isMessageLoading() && selectedMessage() === msg.value) {
+            <i class="pi pi-spin pi-spinner"></i>
+          } @else {
+            {{ msg.label }}
+          }
+        </button>
+      }
+    </div>
+    @if (currentMessage()) {
+      <p class="current-message-label">
+        Your current message:
+        <br>
+        <span>{{ formatMessage(currentMessage()!) }}</span>
+        @if (currentTargetUsername()) {
+          <span class="target-indicator"> → {{ currentTargetUsername() }}</span>
+        }
+      </p>
+    }
+  </div>
+</div>

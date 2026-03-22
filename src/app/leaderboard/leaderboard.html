@@ -1,0 +1,52 @@
+<div class="leaderboard-container">
+  <h3 class="leaderboard-title">Leaderboard</h3>
+
+  <p-table 
+    [value]="leaderboardData()" 
+    [tableStyle]="{'min-width': '100%'}"
+    styleClass="leaderboard-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th class="username-header"><i class="pi pi-user"></i></th>
+        <th class="progress-header"><i class="pi pi-bolt"></i></th>
+        <th class="message-header"><i class="pi pi-comment"></i></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-entry>
+      <tr [class.current-user]="entry.isCurrentUser">
+        <td class="username-cell-container">
+          <div class="username-cell">
+            <span class="username">{{ entry.username }}</span>
+            @if (entry.hasRecentCommit) {
+              <span class="commit-icon" title="Committed today!">💪</span>
+            }
+            @if (entry.status) {
+              <span class="status">{{ entry.status }}</span>
+            }
+          </div>
+        </td>
+        <td class="progress-cell-container">
+          <div class="progress-cell">
+            <div class="progress-value-row">
+              <span class="progress-value">{{ entry.progress }}%</span>
+              @if (entry.hasRecentPromotion) {
+                <span class="promotion-flame" title="Ranked up!">🔥</span>
+              }
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="entry.progress"></div>
+            </div>
+          </div>
+        </td>
+        <td class="message-cell">
+          @if (entry.message) {
+            <span class="message-text">{{ formatMessage(entry.message) }}</span>
+            @if (entry.messageTargetedUsername) {
+              <span class="message-target"> → {{ entry.messageTargetedUsername }}</span>
+            }
+          }
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

@@ -1,0 +1,136 @@
+<div class="challenge-container">
+  <!-- Challenge Info Popup -->
+  @if (showChallengeInfo()) {
+    <div class="popup-overlay" (click)="toggleChallengeInfo()">
+      <div class="popup-card challenge-info-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="toggleChallengeInfo()">
+          <i class="pi pi-times"></i>
+        </button>
+        <div class="popup-icon">🏳️</div>
+        <h3 class="popup-title">What is a Challenge?</h3>
+        <p class="popup-message">A challenge is a group goal: everyone commits to staying clean for a set number of days.</p>
+        <p class="popup-message">If anyone in the group relapses, the challenge fails for everyone.</p>
+        <p class="popup-submessage">Start one and hold each other accountable!</p>
+      </div>
+    </div>
+  }
+
+  <!-- Challenge Started Mode -->
+  @if (showChallengeStarted()) {
+    <div class="overlay-mode challenge-started-mode">
+      <button class="close-btn" (click)="dismissChallengeStarted()">
+        <i class="pi pi-times"></i>
+      </button>
+      <div class="mode-icon">⚔️</div>
+      <h2 class="mode-title">Challenge Started!</h2>
+      @if (challengeStarterName()) {
+        <p class="mode-message"><strong>{{ challengeStarterName() }}</strong> launched a new challenge</p>
+      } @else {
+        <p class="mode-message">A new challenge has been started</p>
+      }
+      <p class="mode-submessage">Stay strong. Your group is counting on you!</p>
+    </div>
+  }
+
+  <!-- Victory Mode -->
+  @if (mode() === 'victory') {
+    <div class="overlay-mode victory-mode">
+      <button class="close-btn" (click)="dismissVictory()">
+        <i class="pi pi-times"></i>
+      </button>
+      <div class="mode-icon">🏆</div>
+      <h2 class="mode-title">Victory!</h2>
+      <p class="mode-message">Your group completed the challenge!</p>
+      <p class="mode-submessage">Incredible teamwork. Keep going!</p>
+    </div>
+  }
+
+  <!-- Failure Mode -->
+  @if (mode() === 'failure') {
+    <div class="overlay-mode failure-mode">
+      <button class="close-btn" (click)="dismissFailure()">
+        <i class="pi pi-times"></i>
+      </button>
+      <div class="mode-icon">💔</div>
+      <h2 class="mode-title">Challenge Failed</h2>
+      <p class="mode-message">Someone in your group relapsed</p>
+      <p class="mode-submessage">Don't give up. Start a new challenge!</p>
+    </div>
+  }
+
+  <!-- Start Challenge Mode -->
+  @if (mode() === 'start') {
+    <div class="start-mode">
+      <div class="challenge-title-row">
+        <h2 class="challenge-title">Start a Challenge</h2>
+        <button class="challenge-info-btn" (click)="toggleChallengeInfo()" title="What is a challenge?">
+          <i class="pi pi-info-circle"></i>
+        </button>
+      </div>
+      <p class="start-description">No relapses for the whole group — one fails, all fail. Ready?</p>
+      
+      <div class="days-input-group">
+        <label for="challenge-days">Days:</label>
+        <input 
+          type="number" 
+          id="challenge-days"
+          [(ngModel)]="challengeDays"
+          min="1"
+          max="365"
+          class="days-input">
+      </div>
+
+      <button 
+        class="start-btn"
+        [disabled]="isLoading() || !authService.isLoggedIn()"
+        (click)="onStartChallenge()">
+        @if (isLoading()) {
+          <i class="pi pi-spin pi-spinner"></i>
+        } @else {
+          <i class="pi pi-flag"></i>
+        }
+        Start {{ challengeDays }}-Day Challenge
+      </button>
+
+      @if (!authService.isLoggedIn()) {
+        <p class="login-prompt">Sign in to start a challenge</p>
+      }
+    </div>
+  }
+
+  <!-- Ongoing Challenge Mode -->
+  @if (mode() === 'ongoing') {
+    <div class="challenge-title-row">
+      <h2 class="challenge-title">Challenge</h2>
+      <button class="challenge-info-btn" (click)="toggleChallengeInfo()" title="What is a challenge?">
+        <i class="pi pi-info-circle"></i>
+      </button>
+    </div>
+    <div class="challenge-circle">
+      <div class="challenge-value">{{ daysResisted() }}/{{ totalDays() }}</div>
+      <svg class="challenge-svg" viewBox="0 0 160 160">
+        <circle
+          class="challenge-bg"
+          cx="80"
+          cy="80"
+          r="70"
+          fill="none"
+          stroke="#1a1a2e"
+          stroke-width="6"
+        />
+        <circle
+          class="challenge-progress"
+          cx="80"
+          cy="80"
+          r="70"
+          fill="none"
+          stroke="#00f2ff"
+          stroke-width="6"
+          [attr.stroke-dasharray]="439.8"
+          [attr.stroke-dashoffset]="strokeDashoffset"
+        />
+      </svg>
+    </div>
+    <p class="days-remaining">{{ daysRemaining() }} days remaining</p>
+  }
+</div>

@@ -1,0 +1,49 @@
+<div class="commit-container">
+  @if (showPowerAnimation()) {
+    <div class="power-burst">
+      <div class="power-ring"></div>
+      <div class="power-ring ring-2"></div>
+      <div class="power-ring ring-3"></div>
+      <div class="power-particles">
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+        <span class="particle"></span>
+      </div>
+    </div>
+  }
+  <button 
+    class="commit-btn" 
+    [class.success]="showSuccess()"
+    [class.committed]="hasCommitted() && !showSuccess()"
+    [disabled]="isLoading() || hasCommitted()"
+    (click)="onCommit()">
+    @if (isLoading()) {
+      <i class="pi pi-spin pi-spinner"></i>
+    } @else if (showSuccess()) {
+      <i class="pi pi-check"></i>
+    } @else if (hasCommitted()) {
+      <i class="pi pi-check-circle"></i>
+    } @else {
+      <span class="bicep-icon">💪</span>
+    }
+    <span class="btn-text">
+      @if (showSuccess()) {
+        Committed!
+      } @else if (hasCommitted()) {
+        Committed
+      } @else {
+        I'm Committed
+      }
+    </span>
+  </button>
+  @if (lastCommit() && !showSuccess() && !hasCommitted()) {
+    <span class="last-commit">Last: {{ timeSinceLastCommit }}</span>
+  }
+</div>

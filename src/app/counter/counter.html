@@ -1,0 +1,224 @@
+<div class="counter-container">
+  <!-- Rank Change Popup -->
+  @if (showRankPopup()) {
+    <div class="popup-overlay" (click)="dismissRankPopup()">
+      <div class="popup-card rank-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissRankPopup()">
+          <i class="pi pi-times"></i>
+        </button>
+        <img class="rank-popup-img" [src]="rankImage()" [alt]="rankTitle()" />
+        <h3 class="popup-title">Congratulations!</h3>
+        <p class="popup-message">
+          You've been promoted to <strong>{{ rankTitle() }}</strong>! Keep it up!
+        </p>
+      </div>
+    </div>
+  }
+
+  <!-- Streak Milestone Popup -->
+  @if (showMilestonePopup()) {
+    <div class="popup-overlay" (click)="dismissMilestonePopup()">
+      <div class="popup-card milestone-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissMilestonePopup()">
+          <i class="pi pi-times"></i>
+        </button>
+        <div class="popup-icon">🔥</div>
+        <h3 class="popup-title">Streak Milestone!</h3>
+        <p class="popup-message">{{ milestoneStreak() }} days strong!</p>
+      </div>
+    </div>
+  }
+
+  <div class="counter-circle">
+    <div class="counter-value">{{ counterValue() }}%</div>
+    <svg class="circle-svg" viewBox="0 0 200 200">
+      <defs>
+        <linearGradient id="shineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color: #de09ef; stop-opacity: 1" />
+          <stop offset="100%" style="stop-color: #de09ef; stop-opacity: 1" />
+        </linearGradient>
+      </defs>
+      <circle
+        class="circle-bg"
+        cx="100"
+        cy="100"
+        r="90"
+        fill="none"
+        stroke="rgba(255,255,255,0.1)"
+        stroke-width="12"
+      />
+      <circle
+        class="circle-progress"
+        cx="100"
+        cy="100"
+        r="90"
+        fill="none"
+        stroke="url(#shineGradient)"
+        stroke-width="12"
+        stroke-linecap="round"
+        [attr.stroke-dasharray]="565.5"
+        [attr.stroke-dashoffset]="strokeDashoffset()"
+      />
+    </svg>
+  </div>
+
+  @if (rankTitle()) {
+    <div class="rank-label">
+      <span class="rank-label-inner">
+        <span>Rank: {{ rankTitle() }}</span>
+        <img class="rank-inline-img" [src]="rankImage()" [alt]="rankTitle()" />
+      </span>
+    </div>
+  }
+  @if (nextRankTitle()) {
+    <div class="next-rank-label">
+      <span class="next-rank-label-inner">
+        <span>Next: {{ nextRankTitle() }}</span>
+        <img class="next-rank-inline-img" [src]="nextRankImage()" [alt]="nextRankTitle()" />
+      </span>
+    </div>
+  }
+
+  <div class="top-btns">
+    <button class="icon-btn stats-btn" (click)="toggleStatsPopup()" title="Statistics">
+      <i class="pi pi-chart-bar"></i>
+    </button>
+    <button class="icon-btn info-btn" (click)="toggleInfoPopup()" title="How is progress computed?">
+      <i class="pi pi-info-circle"></i>
+    </button>
+  </div>
+
+  <!-- Progress Info Popup -->
+  @if (showInfoPopup()) {
+    <div class="popup-overlay" (click)="dismissInfoPopup()">
+      <div class="popup-card info-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissInfoPopup()">
+          <i class="pi pi-times"></i>
+        </button>
+        <div class="popup-icon">📊</div>
+        <h3 class="popup-title">How Progress Works</h3>
+      
+        <div class="progress-scale">
+          <span class="scale-item"><strong>0% </strong> </span>
+          <span class="scale-arrow">→</span>
+          <span class="scale-item"><strong>100% : </strong> Fully Healed</span>
+        </div>
+
+        <p class="popup-message">
+          Less urges & relapses = higher score. Commit daily to keep it up.
+        </p>
+
+        <h4 class="ranks-list-title">Ranks</h4>
+        <div class="ranks-list">
+          @for (r of allRanks; track r.index) {
+            <div class="rank-row" [class.rank-row--active]="r.index === currentRank()">
+              <img class="rank-row-img" [src]="r.image" [alt]="r.title" />
+              <span class="rank-row-title">{{ r.title }}</span>
+              <span class="rank-row-pct">{{ r.minProgress }}%</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Stats Popup -->
+  @if (showStatsPopup()) {
+    <div class="popup-overlay" (click)="dismissStatsPopup()">
+      <div class="popup-card stats-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissStatsPopup()">
+          <i class="pi pi-times"></i>
+        </button>
+        <div class="popup-icon">📈</div>
+        <h3 class="popup-title">Statistics</h3>
+
+        @if (statsLoading()) {
+          <p class="popup-message">Loading…</p>
+        } @else if (stats(); as s) {
+          <!-- Longest Streak -->
+          <div class="stat-row">
+            <span class="stat-label">Longest streak</span>
+            <span class="stat-value">{{ s.longestStreak }} days</span>
+          </div>
+
+          <!-- Worst Day of Week -->
+          <div class="stat-section">
+            <h4 class="stat-section-title">Worst Day (last 60 days)</h4>
+            <div class="stat-row">
+              <span class="stat-label">Most relapses</span>
+              <span class="stat-value">{{ s.worstRelapseDay || '—' }}</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Most urges</span>
+              <span class="stat-value">{{ s.worstUrgeDay || '—' }}</span>
+            </div>
+          </div>
+
+          <!-- Weekly Comparison -->
+          <div class="stat-section">
+            <h4 class="stat-section-title">Weekly Comparison</h4>
+            <table class="stats-table">
+              <thead>
+                <tr><th></th><th>This Week</th><th>Last Week</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Urges</td>
+                  <td>{{ s.thisWeek.urges }}</td>
+                  <td>{{ s.lastWeek.urges }}</td>
+                </tr>
+                <tr>
+                  <td>Relapses</td>
+                  <td>{{ s.thisWeek.relapses }}</td>
+                  <td>{{ s.lastWeek.relapses }}</td>
+                </tr>
+                <tr>
+                  <td>Commits</td>
+                  <td>{{ s.thisWeek.commits }}</td>
+                  <td>{{ s.lastWeek.commits }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Recent Events -->
+          <div class="stat-section">
+            <h4 class="stat-section-title">Recent Events</h4>
+            @if (s.recentEvents.length === 0) {
+              <p class="popup-message">No events yet.</p>
+            } @else {
+              <div class="events-list">
+                @for (ev of s.recentEvents; track ev.date) {
+                  <div class="event-row">
+                    <span class="event-type" [class.event-relapse]="ev.type === 'RELAPSE'" [class.event-urge]="ev.type === 'URGE'" [class.event-commit]="ev.type === 'COMMIT'">{{ ev.type }}</span>
+                    <span class="event-date">{{ ev.date | date:'MMM d, h:mm a' }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  }
+
+  <p class="streak-text">
+    Streak: <span class="streak-value">{{ currentStreak() }}</span> days
+  </p>
+
+  <div class="commit-wrapper">
+    <app-commit-button />
+    <button class="icon-btn commit-info-btn" (click)="toggleCommitInfo()" title="What does commit do?">
+      <i class="pi pi-question-circle"></i>
+    </button>
+  </div>
+
+  <!-- Commit Info Tooltip -->
+  @if (showCommitInfo()) {
+    <div class="commit-info-bubble" (click)="dismissCommitInfo()">
+      <p>Committing shows others you're still active and fighting. It boosts your streak and progress score.</p>
+    </div>
+  }
+
+  <p class="motivational-message">{{ motivationalMessage() }}</p>
+</div>

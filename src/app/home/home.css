@@ -1,0 +1,182 @@
+.home-container {
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  padding: 1rem;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.grid-layout {
+  display: grid;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile: Stack all components */
+@media (max-width: 767px) {
+  .home-container {
+    padding: 0.5rem;
+  }
+  
+  .grid-layout {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    grid-template-areas:
+      "counter"
+      "leaderboard"
+      "challenge"
+      "urge-relapse";
+  }
+  
+  .counter-section {
+    grid-area: counter;
+    background: transparent;
+  }
+  
+  .leaderboard-section {
+    grid-area: leaderboard;
+  }
+  
+  .challenge-section {
+    grid-area: challenge;
+  }
+  
+  .urge-relapse-section {
+    grid-area: urge-relapse;
+  }
+}
+
+/* Tablet and Desktop: 2x2 grid */
+@media (min-width: 768px) {
+  .grid-layout {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "leaderboard counter"
+      "challenge urge-relapse";
+  }
+  
+  .counter-section {
+    grid-area: counter;
+    background: transparent;
+  }
+  
+  .leaderboard-section {
+    grid-area: leaderboard;
+  }
+  
+  .challenge-section {
+    grid-area: challenge;
+  }
+  
+  .urge-relapse-section {
+    grid-area: urge-relapse;
+  }
+}
+
+/* Welcome popup */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.popup-card {
+  background: #1d1648;
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 380px;
+  width: 90%;
+  position: relative;
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.welcome-popup {
+  border: 2px solid #7b2ff7;
+  box-shadow: 0 0 40px rgba(123, 47, 247, 0.4);
+}
+
+.popup-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.popup-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.popup-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.popup-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.75rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.popup-message {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+}
+
+.popup-message strong {
+  color: #00f2ff;
+}
+
+.popup-dismiss-btn {
+  padding: 0.75rem 2rem;
+  background: linear-gradient(135deg, #7b2ff7 0%, #00f2ff 100%);
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.popup-dismiss-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 25px rgba(123, 47, 247, 0.5);
+}

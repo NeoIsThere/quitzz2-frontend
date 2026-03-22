@@ -1,0 +1,50 @@
+<div class="home-container">
+  <!-- Welcome Popup (USER_INIT) -->
+  @if (showWelcomePopup()) {
+    <div class="popup-overlay" (click)="dismissWelcome()">
+      <div class="popup-card welcome-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissWelcome()"><i class="pi pi-times"></i></button>
+        <div class="popup-icon">👋</div>
+        <h3 class="popup-title">Welcome to Unbreaker!</h3>
+        <p class="popup-message">
+          You've joined a group which can grow up to <strong>8 members</strong>. 
+          Support each other, track your progress, and grow stronger together.
+        </p>
+        <button class="popup-dismiss-btn" (click)="dismissWelcome()">Let's Go!</button>
+      </div>
+    </div>
+  }
+
+  <!-- User Joined Popup (USER_JOINED) -->
+  @if (showJoinedPopup()) {
+    <div class="popup-overlay" (click)="dismissJoined()">
+      <div class="popup-card welcome-popup" (click)="$event.stopPropagation()">
+        <button class="popup-close" (click)="dismissJoined()"><i class="pi pi-times"></i></button>
+        <div class="popup-icon">🎉</div>
+        <h3 class="popup-title">New Member!</h3>
+        <p class="popup-message">
+          <strong>{{ joinedUsername() }}</strong> just joined your group. Welcome them!
+        </p>
+        <button class="popup-dismiss-btn" (click)="dismissJoined()">Got it!</button>
+      </div>
+    </div>
+  }
+
+  <div class="grid-layout">
+    <div class="counter-section">
+      <app-counter />
+    </div>
+    
+    <div class="leaderboard-section">
+      <app-leaderboard />
+    </div>
+    
+    <div class="challenge-section">
+      <app-challenge />
+    </div>
+    
+    <div class="urge-relapse-section">
+      <app-urge-relapse />
+    </div>
+  </div>
+</div>

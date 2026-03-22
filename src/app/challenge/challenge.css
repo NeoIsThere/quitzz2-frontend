@@ -1,0 +1,440 @@
+.challenge-container {
+  padding: 2rem;
+  background: #1d1648;
+  border-radius: 20px;
+  min-height: 300px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.challenge-started-mode {
+  background: linear-gradient(135deg, #1a2d4d 0%, #1e4080 50%, #1a2d4d 100%);
+  box-shadow: 0 0 40px rgba(0, 140, 255, 0.4);
+}
+
+/* Challenge title row */
+.challenge-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.challenge-title-row .challenge-title {
+  margin: 0;
+}
+
+.challenge-title {
+  color: #ffffff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Overlay modes (Victory / Failure / Info) */
+.overlay-mode {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: fadeIn 0.3s ease;
+}
+
+.info-overlay {
+  background: rgba(18, 9, 62, 0.97);
+  padding: 2rem 1.5rem;
+}
+
+/* Challenge info popup (same as progress info popup) */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.popup-card {
+  background: #1d1648;
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  position: relative;
+  animation: popIn 0.3s ease;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.challenge-info-popup {
+  border: 2px solid #7b2ff7;
+  box-shadow: 0 0 40px rgba(123, 47, 247, 0.4);
+}
+
+.popup-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.popup-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.popup-icon {
+  font-size: 3.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.popup-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.popup-message {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.popup-message:last-of-type {
+  margin-bottom: 0.5rem;
+}
+
+.popup-submessage {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  font-style: italic;
+}
+
+/* Challenge info button */
+.challenge-info-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  color: #00f2ff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.challenge-info-btn:hover {
+  background: rgba(0, 242, 255, 0.15);
+  border-color: #00f2ff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.victory-mode {
+  background: linear-gradient(135deg, #1a4d1a 0%, #2d7a2d 50%, #1a4d1a 100%);
+  box-shadow: 0 0 40px rgba(50, 205, 50, 0.4);
+}
+
+.failure-mode {
+  background: linear-gradient(135deg, #4d1a1a 0%, #7a2d2d 50%, #4d1a1a 100%);
+  box-shadow: 0 0 40px rgba(220, 50, 50, 0.4);
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1rem;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.mode-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.mode-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+}
+
+.mode-message {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+}
+
+.mode-submessage {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  text-align: center;
+}
+
+/* Start Challenge Mode */
+.start-mode {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.start-description {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1rem;
+  text-align: center;
+}
+
+.days-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.days-input-group label {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.days-input {
+  width: 80px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #00f2ff;
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+}
+
+.days-input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+.start-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #00f2ff 0%, #00b4d8 100%);
+  color: #0a0a0f;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.start-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 242, 255, 0.4);
+}
+
+.start-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.login-prompt {
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+}
+
+/* Ongoing Challenge Mode */
+.challenge-circle {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.challenge-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.challenge-bg {
+  opacity: 0.3;
+}
+
+.challenge-progress {
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.challenge-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+  z-index: 1;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.days-remaining {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+.member-progress-list {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+.member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.member-item:last-child {
+  border-bottom: none;
+}
+
+.member-item.relapsed {
+  opacity: 0.6;
+}
+
+.member-name {
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+.member-days {
+  color: #00f2ff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.member-item.relapsed .member-days {
+  color: #ff6b6b;
+}
+
+@media (max-width: 767px) {
+  .challenge-container {
+    padding: 1rem;
+    min-height: 200px;
+  }
+  
+  .challenge-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .challenge-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .challenge-value {
+    font-size: 1.5rem;
+  }
+  
+  .mode-icon {
+    font-size: 3rem;
+  }
+  
+  .mode-title {
+    font-size: 1.5rem;
+  }
+  
+  .start-description {
+    font-size: 0.9rem;
+  }
+  
+  .days-remaining {
+    margin-top: 0.5rem;
+  }
+  
+  .member-progress-list {
+    margin-top: 1rem;
+  }
+}

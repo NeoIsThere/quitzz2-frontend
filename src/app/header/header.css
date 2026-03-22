@@ -1,0 +1,240 @@
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(29, 22, 72, 0.9) 0%, transparent 100%);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+}
+
+.logo-text {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #00f2ff;
+  text-shadow: 0 0 15px rgba(0, 242, 255, 0.6);
+  letter-spacing: 0.15em;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.username {
+  color: #ffffffb0;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.signin-btn {
+  background: linear-gradient(135deg, #7b2ff7 0%, #00f2ff 100%);
+  border: none;
+  color: #ffffff;
+}
+
+.signin-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(123, 47, 247, 0.4);
+}
+
+.logout-btn {
+  background: transparent;
+  border: 2px solid rgba(255, 100, 100, 0.5);
+  color: #ff6b6b;
+}
+
+.logout-btn:hover {
+  background: rgba(255, 100, 100, 0.1);
+  border-color: #ff6b6b;
+}
+
+@media (max-width: 600px) {
+  .header-container {
+    padding: 0 1rem;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+  }
+
+  .auth-btn span {
+    display: none;
+  }
+
+  .auth-btn {
+    padding: 0.6rem;
+  }
+
+  .username {
+    display: inline;
+    font-size: 0.8rem;
+  }
+}
+
+/* FAQ button */
+.faq-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 242, 255, 0.3);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #00f2ff;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.faq-btn:hover {
+  background: rgba(0, 242, 255, 0.15);
+  border-color: #00f2ff;
+  box-shadow: 0 0 12px rgba(0, 242, 255, 0.3);
+}
+
+/* FAQ overlay & card */
+.faq-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: faqFadeIn 0.2s ease;
+}
+
+@keyframes faqFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.faq-card {
+  background: #1d1648;
+  border-radius: 20px;
+  padding: 2.5rem;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  border: 2px solid #00f2ff;
+  box-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
+  animation: faqPopIn 0.3s ease;
+}
+
+@keyframes faqPopIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.faq-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.faq-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.faq-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.faq-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.faq-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.faq-text:last-child {
+  margin-bottom: 0;
+}
+
+.faq-text strong {
+  color: #00f2ff;
+}
+
+.faq-donate-section {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.donate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff3b7a 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(255, 59, 122, 0.3);
+}
+
+.donate-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(255, 59, 122, 0.5);
+}
+
+.donate-btn i {
+  font-size: 0.9rem;
+}

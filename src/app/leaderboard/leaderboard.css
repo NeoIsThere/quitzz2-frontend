@@ -1,0 +1,310 @@
+.leaderboard-container {
+  padding: 2rem;
+  background: #1d1648;
+  border-radius: 20px;
+  min-height: 400px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.leaderboard-title {
+  color: #00f2ff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+@media (max-width: 767px) {
+  .leaderboard-title {
+    display: none;
+  }
+}
+
+/* Override PrimeNG table styles */
+:host ::ng-deep .leaderboard-table {
+  background: transparent !important;
+  table-layout: fixed !important;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-table-container {
+  background: transparent !important;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-table {
+  background: transparent !important;
+  table-layout: fixed !important;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead {
+  background: transparent !important;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead > tr {
+  background: transparent !important;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead > tr > th {
+  background: transparent !important;
+  color: #ffffffb0 !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  padding: 0.75rem;
+  text-align: center;
+  border-bottom: 2px solid #ffffffb0;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead > tr > th:first-child {
+  border-top-left-radius: 10px;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead > tr > th:last-child {
+  border-top-right-radius: 10px;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-thead > tr > th i {
+  font-size: 1.2rem;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-tbody > tr {
+  background: rgba(26, 26, 46, 0.4) !important;
+  border: 1px solid rgba(0, 242, 255, 0.1) !important;
+  transition: all 0.3s ease;
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-tbody > tr:hover {
+  background: rgba(0, 242, 255, 0.05) !important;
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-tbody > tr.current-user {
+  background: rgba(123, 47, 247, 0.2) !important;
+  border: 2px solid rgba(123, 47, 247, 0.6) !important;
+  box-shadow: 0 0 20px rgba(123, 47, 247, 0.3);
+}
+
+:host ::ng-deep .leaderboard-table .p-datatable-tbody > tr > td {
+  border: none !important;
+  color: #ffffffb0 !important;
+  padding: 1rem 0.75rem;
+}
+
+/* Username column */
+.username-header {
+  width: 140px !important;
+  min-width: 140px !important;
+  max-width: 140px !important;
+  text-align: center !important;
+}
+
+.username-cell-container {
+  width: 140px !important;
+  min-width: 140px !important;
+  max-width: 140px !important;
+  text-align: center !important;
+  overflow: hidden;
+}
+
+.username-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.username {
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 0.9rem;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status {
+  font-size: 0.7rem;
+  color: #ff6b6b;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+.progress-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.progress-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.promotion-flame {
+  font-size: 0.9rem;
+  display: inline-block;
+  animation: flamePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes flamePulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.2);
+    filter: brightness(1.3);
+  }
+}
+
+/* Progress column */
+.progress-header {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+.progress-cell-container {
+  width: 80px !important;
+  min-width: 80px !important;
+  max-width: 80px !important;
+}
+
+.progress-value {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 242, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #b700ff;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.6);
+}
+
+.message-cell {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #b0b0b0;
+  overflow: hidden;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.message-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.message-target {
+  display: block;
+  color: #ff00ff;
+  font-weight: 600;
+  font-style: normal;
+  font-size: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+/* Commit icon (shown under username) */
+.commit-icon {
+  font-size: 1rem;
+  display: inline-block;
+  animation: flexPulse 2s ease-in-out infinite;
+}
+
+@keyframes flexPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@media (max-width: 767px) {
+  .leaderboard-container {
+    padding: 1.25rem;
+    min-height: auto;
+  }
+
+  .leaderboard-title {
+    font-size: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  :host ::ng-deep .leaderboard-table .p-datatable-tbody > tr > td {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  :host ::ng-deep .leaderboard-table .p-datatable-thead > tr > th {
+    padding: 0.5rem 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .username-header {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+  }
+
+  .username-cell-container {
+    width: 120px !important;
+    min-width: 120px !important;
+    max-width: 120px !important;
+  }
+
+  .username {
+    font-size: 0.75rem;
+    max-width: 110px;
+  }
+
+  .progress-value {
+    font-size: 0.8rem;
+  }
+
+  .progress-header {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+
+  .progress-cell-container {
+    width: 60px !important;
+    min-width: 60px !important;
+    max-width: 60px !important;
+  }
+
+  .status {
+    font-size: 0.65rem;
+  }
+
+  .message-cell {
+    font-size: 0.75rem;
+  }
+
+  .commit-icon {
+    font-size: 0.85rem;
+  }
+}

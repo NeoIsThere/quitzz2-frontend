@@ -1,0 +1,183 @@
+.commit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+}
+
+.commit-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #7b2ff7 0%, #f222ff 100%);
+  border: none;
+  border-radius: 15px;
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 25px rgba(123, 47, 247, 0.4);
+  min-width: 200px;
+}
+
+.commit-btn:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 35px rgba(123, 47, 247, 0.6);
+}
+
+.commit-btn:active:not(:disabled) {
+  transform: translateY(-1px) scale(0.98);
+}
+
+.commit-btn:disabled {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.commit-btn.success {
+  background: linear-gradient(135deg, #00c853 0%, #00f2ff 100%);
+  box-shadow: 0 5px 25px rgba(0, 200, 83, 0.4);
+  animation: successPulse 0.6s ease-in-out 3;
+}
+
+@keyframes successPulse {
+  0%, 100% { box-shadow: 0 5px 25px rgba(0, 200, 83, 0.4); }
+  50% { box-shadow: 0 5px 50px rgba(0, 200, 83, 0.8), 0 0 80px rgba(0, 242, 255, 0.3); }
+}
+
+.commit-btn.committed {
+  background: linear-gradient(135deg, #4a4a4a 0%, #6a6a6a 100%);
+  box-shadow: 0 3px 15px rgba(100, 100, 100, 0.3);
+  opacity: 0.7;
+}
+
+.commit-btn.committed i {
+  color: #00ff88;
+}
+
+.bicep-icon {
+  font-size: 1.3rem;
+}
+
+.btn-text {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.last-commit {
+  font-size: 0.8rem;
+  color: #ffffffb0;
+}
+
+@media (max-width: 600px) {
+  .commit-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    min-width: 160px;
+  }
+}
+
+/* Power burst animation on commit */
+.power-burst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 350px;
+  height: 350px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.power-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  border: 5px solid rgba(0, 200, 83, 0.9);
+  transform: translate(-50%, -50%);
+  animation: ringExpand 1.4s ease-out forwards;
+  box-shadow: 0 0 20px rgba(0, 200, 83, 0.5);
+}
+
+.power-ring.ring-2 {
+  border-color: rgba(0, 242, 255, 0.7);
+  border-width: 4px;
+  animation-delay: 0.2s;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+}
+
+.power-ring.ring-3 {
+  border-color: rgba(123, 47, 247, 0.6);
+  border-width: 3px;
+  animation-delay: 0.4s;
+  box-shadow: 0 0 15px rgba(123, 47, 247, 0.4);
+}
+
+@keyframes ringExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  60% {
+    opacity: 0.8;
+  }
+  100% {
+    width: 320px;
+    height: 320px;
+    opacity: 0;
+  }
+}
+
+.power-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #00f2ff;
+  border-radius: 50%;
+  animation: particleFly 1.4s ease-out forwards;
+  box-shadow: 0 0 12px #00f2ff, 0 0 24px rgba(0, 242, 255, 0.4);
+}
+
+.particle:nth-child(1)  { animation-delay: 0s;    --angle: 0deg; }
+.particle:nth-child(2)  { animation-delay: 0.05s; --angle: 45deg; }
+.particle:nth-child(3)  { animation-delay: 0.1s;  --angle: 90deg; }
+.particle:nth-child(4)  { animation-delay: 0.05s; --angle: 135deg; }
+.particle:nth-child(5)  { animation-delay: 0.1s;  --angle: 180deg; }
+.particle:nth-child(6)  { animation-delay: 0s;    --angle: 225deg; background: #00c853; box-shadow: 0 0 12px #00c853, 0 0 24px rgba(0, 200, 83, 0.4); }
+.particle:nth-child(7)  { animation-delay: 0.08s; --angle: 270deg; background: #7b2ff7; box-shadow: 0 0 12px #7b2ff7, 0 0 24px rgba(123, 47, 247, 0.4); }
+.particle:nth-child(8)  { animation-delay: 0.12s; --angle: 315deg; }
+.particle:nth-child(9)  { animation-delay: 0.06s; --angle: 22deg; background: #f222ff; box-shadow: 0 0 12px #f222ff; }
+.particle:nth-child(10) { animation-delay: 0.15s; --angle: 202deg; background: #00c853; box-shadow: 0 0 12px #00c853; }
+
+@keyframes particleFly {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(
+      calc(cos(var(--angle)) * 150px),
+      calc(sin(var(--angle)) * 150px)
+    ) scale(0);
+    opacity: 0;
+  }
+}

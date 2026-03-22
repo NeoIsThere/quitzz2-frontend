@@ -1,0 +1,56 @@
+<header class="header-container">
+  <div class="header-left">
+    <a routerLink="/" class="logo">
+      <span class="logo-text">UNBREAKER</span>
+    </a>
+  </div>
+
+  <div class="header-right">
+    <button class="faq-btn" (click)="toggleFaq()" title="What is Unbreaker?">
+      <i class="pi pi-question-circle"></i>
+    </button>
+    @if (authService.isLoggedIn()) {
+      <span class="username">{{ authService.user()?.username }}</span>
+      <button class="auth-btn logout-btn" (click)="onLogout()">
+        <i class="pi pi-sign-out"></i>
+        <span>Logout</span>
+      </button>
+    } @else {
+      <a routerLink="/auth" class="auth-btn signin-btn">
+        <i class="pi pi-sign-in"></i>
+        <span>Sign In</span>
+      </a>
+    }
+  </div>
+</header>
+
+<!-- FAQ Popup -->
+@if (showFaq()) {
+  <div class="faq-overlay" (click)="dismissFaq()">
+    <div class="faq-card" (click)="$event.stopPropagation()">
+      <button class="faq-close" (click)="dismissFaq()"><i class="pi pi-times"></i></button>
+      <div class="faq-icon">❓</div>
+      <h3 class="faq-title">What is Unbreaker?</h3>
+      <p class="faq-text">
+        Unbreaker is an <strong>accountability app</strong> that helps you quit porn for good.
+      </p>
+      <p class="faq-text">
+        You're placed in a small group of up to <strong>8 members</strong> who support each other on the same journey.
+      </p>
+      <p class="faq-text">
+        Track your progress, log urges, take on challenges, send encouragement, and climb the ranks together.
+      </p>
+
+      <div class="faq-donate-section">
+        <p class="faq-text">
+          Unbreaker is <strong>100% free</strong> with <strong>no ads</strong>. Your donations help us keep it that way.
+        </p>
+        <a class="donate-btn" href="https://www.paypal.com/donate/?hosted_button_id=69AS3ZARCBM7Q" target="_blank" rel="noopener">
+          <i class="pi pi-heart-fill"></i>
+          <span>Donate</span>
+        </a>
+      </div>
+
+    </div>
+  </div>
+}
