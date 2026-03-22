@@ -273,20 +273,48 @@
   font-size: 1rem;
 }
 
-.days-input {
-  width: 80px;
-  padding: 0.5rem 0.75rem;
-  font-size: 1.2rem;
-  background: rgba(0, 0, 0, 0.3);
+.days-stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
   border: 2px solid #00f2ff;
   border-radius: 8px;
-  color: #fff;
-  text-align: center;
+  overflow: hidden;
 }
 
-.days-input:focus {
-  outline: none;
-  box-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+.stepper-btn {
+  width: 36px;
+  height: 40px;
+  background: rgba(0, 242, 255, 0.1);
+  border: none;
+  color: #00f2ff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  line-height: 1;
+}
+
+.stepper-btn:hover:not(:disabled) {
+  background: rgba(0, 242, 255, 0.25);
+}
+
+.stepper-btn:disabled {
+  color: rgba(255, 255, 255, 0.2);
+  cursor: not-allowed;
+}
+
+.stepper-value {
+  min-width: 42px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 0 0.25rem;
+  line-height: 40px;
+  height: 40px;
+  display: inline-block;
 }
 
 .start-btn {

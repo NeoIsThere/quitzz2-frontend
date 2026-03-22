@@ -1,6 +1,5 @@
 import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { ApiService, ChallengeProgressResponse } from '../services/api.service';
 import { AuthService } from '../services/auth.service';
 import { interval, Subscription } from 'rxjs';
@@ -16,7 +15,7 @@ interface QueuedNotification {
 @Component({
   selector: 'app-challenge',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule],
   templateUrl: './challenge.html',
   styleUrl: './challenge.css',
 })
@@ -26,6 +25,14 @@ export class Challenge implements OnInit, OnDestroy {
   
   // Challenge creation
   protected challengeDays = 7;
+
+  decrementDays(): void {
+    if (this.challengeDays > 2) this.challengeDays--;
+  }
+
+  incrementDays(): void {
+    if (this.challengeDays < 10) this.challengeDays++;
+  }
   
   // Ongoing challenge data
   protected daysResisted = signal(0);
@@ -73,9 +80,23 @@ export class Challenge implements OnInit, OnDestroy {
     if (this.authService.isLoggedIn()) {
       const customEvent = event as CustomEvent;
       if (customEvent?.detail?.challengeFailed) {
-        // Immediately show failure UI without waiting for server
+        // Show failure UI immediately, then load notifications
+        // so the queue has the CHALLENGE_FAILED notif ID for proper backend deletion on dismiss
         this.showFailure.set(true);
         this.mode.set('failure');
+        this.apiService.getChallengeNotifications().subscribe({
+          next: (response) => {
+            const currentUsername = this.authService.user()?.username;
+            this.notifQueue = response.notifications
+              .filter(n => !(n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername))
+              .map(n => ({ id: n.id, type: n.type, trigger_username: n.trigger_username }));
+            const selfStarted = response.notifications
+              .filter(n => n.type === 'CHALLENGE_STARTED' && n.trigger_username === currentUsername);
+            for (const n of selfStarted) {
+              this.apiService.consumeNotification(n.id).subscribe();
+            }
+          }
+        });
       } else {
         this.loadChallengeState();
         this.checkNotifications();
@@ -188,7 +209,7 @@ export class Challenge implements OnInit, OnDestroy {
 
   onStartChallenge(): void {
     if (this.isLoading() || !this.authService.isLoggedIn()) return;
-    if (this.challengeDays < 1 || this.challengeDays > 365) return;
+    this.challengeDays = Math.min(10, Math.max(2, this.challengeDays));
 
     this.isLoading.set(true);
     this.apiService.createChallenge(this.challengeDays).subscribe({
