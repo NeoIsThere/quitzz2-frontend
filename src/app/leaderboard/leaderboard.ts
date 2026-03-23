@@ -1,4 +1,4 @@
-import { Component, signal, inject, OnInit, OnDestroy, effect } from '@angular/core';
+import { Component, signal, inject, OnInit, OnDestroy, effect, input } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../services/api.service';
@@ -27,6 +27,8 @@ export class Leaderboard implements OnInit, OnDestroy {
   private authService = inject(AuthService);
   private refreshInterval: ReturnType<typeof setInterval> | null = null;
   private refreshHandler = () => this.loadLeaderboard();
+
+  readonly groupDisplayId = input<number | null>(null);
 
   protected readonly leaderboardData = signal<LeaderboardEntry[]>([]);
   protected readonly isLoading = signal(false);

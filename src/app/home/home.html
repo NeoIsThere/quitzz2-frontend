@@ -36,7 +36,13 @@
     </div>
     
     <div class="leaderboard-section">
-      <app-leaderboard />
+      @if (totalUsers()) {
+        <div class="platform-stats">
+          <span class="stat-total">{{ totalUsers() }} users</span>
+          <span class="stat-online"><span class="online-dot"></span>{{ onlineUsers() }} online</span>
+        </div>
+      }
+      <app-leaderboard [groupDisplayId]="groupDisplayId()" />
     </div>
     
     <div class="challenge-section">

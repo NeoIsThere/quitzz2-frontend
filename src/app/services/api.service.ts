@@ -177,6 +177,10 @@ export class ApiService {
     return this.http.get<GroupMembersResponse>(`${this.API_URL}/groups/members`);
   }
 
+  getGroupStats(): Observable<{ groupDisplayId: number; totalUsers: number; onlineUsers: number }> {
+    return this.http.get<{ groupDisplayId: number; totalUsers: number; onlineUsers: number }>(`${this.API_URL}/groups/stats`);
+  }
+
   // Messages
   getMessages(): Observable<MessagesResponse> {
     return this.http.get<MessagesResponse>(`${this.API_URL}/messages`);

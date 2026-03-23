@@ -21,12 +21,26 @@ export class Home implements OnInit {
   protected showWelcomePopup = signal(false);
   protected showJoinedPopup = signal(false);
   protected joinedUsername = signal<string | null>(null);
+  protected groupDisplayId = signal<number | null>(null);
+  protected totalUsers = signal<number | null>(null);
+  protected onlineUsers = signal<number | null>(null);
   private welcomeNotifId: number | null = null;
   private joinedNotifIds: number[] = [];
   private joinedNotifUsernames: string[] = [];
 
   ngOnInit(): void {
     this.checkWelcomeNotification();
+    this.loadGroupStats();
+  }
+
+  private async loadGroupStats(): Promise<void> {
+    if (!this.authService.isLoggedIn()) return;
+    try {
+      const stats = await firstValueFrom(this.apiService.getGroupStats());
+      this.groupDisplayId.set(stats.groupDisplayId);
+      this.totalUsers.set(stats.totalUsers);
+      this.onlineUsers.set(stats.onlineUsers);
+    } catch { }
   }
 
   private async checkWelcomeNotification(): Promise<void> {

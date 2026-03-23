@@ -180,3 +180,28 @@
   transform: translateY(-2px);
   box-shadow: 0 5px 25px rgba(123, 47, 247, 0.5);
 }
+
+/* Platform stats above leaderboard */
+.platform-stats {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.stat-online {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.online-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.6);
+}

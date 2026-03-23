@@ -1,5 +1,8 @@
 <div class="leaderboard-container">
   <h3 class="leaderboard-title">Leaderboard</h3>
+  @if (groupDisplayId()) {
+    <span class="group-id">group id: #{{ groupDisplayId() }}</span>
+  }
 
   <p-table 
     [value]="leaderboardData()" 
